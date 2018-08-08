@@ -17,8 +17,9 @@ public:/*algorithm basic operation*/
         while(!feof(fp))
         {
             tr = (struct train_record *)malloc(sizeof(struct train_record));
-            fscanf(fp, "%ld,%ld,%lf,%lf,%lf\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size);
+            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size, &tr->freq);
             mydataset.push_back(tr);
+            tr = NULL;
         }
         fclose(fp);
     }
@@ -32,8 +33,11 @@ public:/*algorithm basic operation*/
         FILE *fp = fopen(filename, "r");
         while (!feof(fp))
         {
-            fscanf(fp, "%ld,%ld,%lf,%lf,%lf\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size);
-            predict(tr);
+            tr = (struct train_record *)malloc(sizeof(struct train_record));
+            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size,&tr->freq);
+            cout << predict(tr) << endl;;
+            free(tr);
+            tr = NULL;
         }
         fclose(fp);
     }

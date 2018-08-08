@@ -26,6 +26,7 @@ enum Classes
 
 struct train_record
 {
+    int freq;
     long read_timestamp;
     long write_timestamp;
     double read_ratio;
