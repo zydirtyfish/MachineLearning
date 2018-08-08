@@ -10,20 +10,28 @@
 #include <iterator>
 using namespace std;
 
+#ifndef ALGORITHMT
+#define ALGORITHMT
 enum AlgorithmType
 {
-    DecisionTree = 0,           //decision tree
-    LogisticRegression,     //logistic regression
-    BayesianClassification, //bayesian classification
-    RandomForest            //random forest
+    DecisionTree__ = 0,           //decision tree
+    LogisticRegression__,     //logistic regression
+    BayesianClassification__, //bayesian classification
+    RandomForest__            //random forest
 };
+#endif
 
+#ifndef CLASSES
+#define CLASSES
 enum Classes
 {
     Hot = 0,
     Cold
 };
+#endif
 
+#ifndef TRAIN_RE
+#define TRAIN_RE
 struct train_record
 {
     int freq;
@@ -33,3 +41,4 @@ struct train_record
     double read_size;
     double write_size;
 };
+#endif

@@ -24,9 +24,9 @@ public:/*algorithm basic operation*/
         fclose(fp);
     }
 
-    virtual void training(const char *filename){};
+    virtual void training(const char *filename)=0;
 
-    virtual Classes predict(struct train_record *tr){};
+    virtual Classes predict(struct train_record *tr)=0;
 
     void predict_many(const char *filename)
     {
@@ -42,6 +42,6 @@ public:/*algorithm basic operation*/
         fclose(fp);
     }
 
-    virtual void persistent(const char * filename){};
-    virtual void load_model(const char * filename){};
+    virtual void persistent(const char * filename)=0;
+    virtual void load_model(const char * filename)=0;
 };

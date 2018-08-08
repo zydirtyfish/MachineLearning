@@ -20,8 +20,8 @@ public:
 
     Classes predict(struct train_record *tr)
     {
-
-
+        
+        return Hot;
     }
     
     void persistent(const char *filename)
