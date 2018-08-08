@@ -7,20 +7,30 @@ private:
 public:
     /*initialize*/
     DecisionTree()
-    {
-
-    }
+    {}
 
     ~DecisionTree()
+    {}
+
+    void training(const char *filename)
+    {
+        /*get the training data set*/
+        get_data_set(filename);
+    }
+
+    Classes predict(struct train_record *tr)
+    {
+
+
+    }
+    
+    void persistent(const char *filename)
     {
 
     }
-
-    Classes predict()
+    
+    void load_model(const char *filename)
     {
 
-
     }
-
-
 };
