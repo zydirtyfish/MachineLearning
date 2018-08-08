@@ -6,11 +6,8 @@
 #include <string>
 #include <string.h>
 #include <vector>
-#include "ID3.h"
 #include <set>
 #include <iterator>
-#include "C4_5.h"
-#include "CART.h"
 using namespace std;
 
 enum AlgorithmType
