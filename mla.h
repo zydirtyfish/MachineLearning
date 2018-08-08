@@ -17,7 +17,7 @@ public:/*algorithm basic operation*/
         while(!feof(fp))
         {
             tr = (struct train_record *)malloc(sizeof(struct train_record));
-            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size, &tr->freq);
+            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size, &tr->freq,&tr->label);
             mydataset.push_back(tr);
             tr = NULL;
         }

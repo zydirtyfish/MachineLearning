@@ -13,14 +13,12 @@ int main(int argc,char *argv[])
     switch (atoi(tmp))
     {
         case 0:
-            cout << "123" << endl;
             dt = new class DecisionTree();
             break;
         default:
             break;
     }
-    dt->training("train.cvs");
-    dt->predict_many("test.cvs");
-    system("pause");
+    dt->training("train.csv");
+    dt->predict_many("test.csv");
     return 0;
 }

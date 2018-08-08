@@ -35,6 +35,7 @@ enum Classes
 struct train_record
 {
     int freq;
+    int label; /*标记类别*/
     long read_timestamp;
     long write_timestamp;
     double read_ratio;
