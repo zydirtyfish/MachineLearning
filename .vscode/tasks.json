@@ -6,7 +6,8 @@
         "-g",
         "${file}",
         "-o",
-        "${fileBasenameNoExtension}.out"
+        "${fileBasenameNoExtension}.out",
+        "-std=c++11"
     ],
     "showOutput": "always",
     "problemMatcher": { //正则匹配，删除无用符号

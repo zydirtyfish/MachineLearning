@@ -8,6 +8,8 @@
 #include <vector>
 #include <set>
 #include <iterator>
+#include <cmath>
+
 using namespace std;
 
 #ifndef ALGORITHMT
