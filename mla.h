@@ -8,6 +8,7 @@ protected:
     AlgorithmType at;
     vector<int> Data[MAX_LEN];
     struct train_record *tr;
+    set<int> Attr_value[ATTR_NUM]; /*每个属性的值的集合，每个属性有多个值*/
     int length; /*样本数*/
 
 public:/*algorithm basic operation*/
@@ -21,8 +22,12 @@ public:/*algorithm basic operation*/
         {
             tr = (struct train_record *)malloc(sizeof(struct train_record));
             fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d,%d,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size, &tr->readfreq,&tr->writefreq,&tr->label);
-            Data[m] = pre_pro_data(tr);
+            Data[m] = pre_pro_data(tr); /*add label to the training record*/
             Data[m].push_back(tr->label);
+            for(int k = 0 ; k < ATTR_NUM ; k++)
+            {/*update the attr set values*/
+                Attr_value[k].insert(Data[m][k]);
+            }
             m++;
             tr = NULL;
         }

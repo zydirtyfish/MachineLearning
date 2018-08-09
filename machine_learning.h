@@ -37,19 +37,6 @@ enum Classes
 };
 #endif
 
-#ifndef ATTR
-#define ATTR
-enum Attribute
-{
-    FREQ = 0,
-    READTIME,
-    WRTIETIME,
-    READRATIO,
-    READSIZE,
-    WRITESIZE
-};
-#endif
-
 #ifndef TRAIN_RE
 #define TRAIN_RE
 struct train_record
@@ -62,5 +49,17 @@ struct train_record
     double read_ratio;
     double read_size;
     double write_size;
+};
+#endif
+
+
+
+#ifndef ALTYPE
+#define ALTYPE
+enum ATYPE
+{
+    C45=0,
+    CART,
+    ID3
 };
 #endif
