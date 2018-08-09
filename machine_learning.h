@@ -14,7 +14,7 @@ using namespace std;
 
 #ifndef ATTRN
 #define ATTRN
-#define ATTR_NUM 9
+#define ATTR_NUM 7
 #endif
 
 #ifndef ALGORITHMT

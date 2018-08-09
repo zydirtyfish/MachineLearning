@@ -8,12 +8,12 @@ int main(int argc, char *argv[])
     strcpy(config_file, "config");
     Config *cf = new Config();
     char tmp[50];
-    cf->Get(config_file, "trace_type", tmp);
+    cf->Get(config_file, "AlgorithmType", tmp);
     MLA *dt;
 
+    ATYPE a = C45;/*设置决策树算法的类别*/
     switch (atoi(tmp))
     {
-        ATYPE a = C45;
         case 0:
             dt = new class DecisionTree(a);
             break;
@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
             dt = new class DecisionTree(a);
             break;
     }
+    
     dt->training("train.csv");
     dt->predict_many("test.csv");
     return 0;

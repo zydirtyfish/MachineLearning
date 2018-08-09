@@ -26,8 +26,6 @@ struct TreeNode
 };
 #endif
 
-
-
 class DecisionTree : public MLA
 {
 private:
@@ -46,6 +44,7 @@ public:
             attr.push_back(i);
         }
         algorithm_type = at;
+        root = new TreeNode;
     }
 
     ~DecisionTree()
@@ -60,8 +59,9 @@ public:
             index.push_back(i);
         }
         recursive(root, index, algorithm_type);
-        eT(root);   /*遍历树，标记可以剪枝的节点*/
-        ergo(root); /*遍历树并剪枝。*/
+        show(root);
+        //eT(root);   /*遍历树，标记可以剪枝的节点*/
+        //ergo(root); /*遍历树并剪枝。*/
     }
 
     Classes predict(struct train_record *tr)
@@ -71,13 +71,20 @@ public:
     }
     
     void persistent(const char *filename)
-    {
-
-    }
+    {}
     
     void load_model(const char *filename)
-    {
+    {}
 
+    void show(TreeNode *tn)
+    {
+        cout << tn->attr << " : ";
+        for (auto it = tn->attr_value.begin(); it != tn->attr_value.end(); it++)
+        {
+            cout << *it << " ";
+            show(tn->children[*it]);
+        }
+        cout << endl;
     }
 
   private:
@@ -193,18 +200,19 @@ public:
         switch(algorithmtype)
         {
             case C45:
-                result = getAttr1(data, index, attr); break;
+                result = getAttr1(data, index); break;
             case CART:
-                result = getAttr2(data, index, attr);break;
+                result = getAttr2(data, index);break;
             case ID3:
-                result = getAttr3(data, index, attr);break;
+                result = getAttr3(data, index);break;
             default:
-                result = getAttr1(data, index, attr);break;
+                result = getAttr1(data, index);break;
         }
+        cout << "123123123    " << result << endl;
         return result;
     }
 
-    int getAttr1(vector<int> *data, vector<int> index, vector<int> attr)
+    int getAttr1(vector<int> *data, vector<int> index)
     { /*返回熵增益最大的属性，使用C4_5算法*/
         double pos = 0, neg = 0;
         int len = index.size();
@@ -224,8 +232,8 @@ public:
         for (int k = 0; k < attr.size(); k++)
         {
             int i = attr[k];
-            double attr_pos[50] = {0};
-            double attr_neg[50] = {0};
+            double attr_pos[MAXNODE] = {0};
+            double attr_neg[MAXNODE] = {0};
             for (int j = 0; j < len; j++)
             { /*计算各分支的正例与反例的个数*/
                 int a = index[j];
@@ -268,14 +276,14 @@ public:
         return a * log(a) / log(2);
     }
 
-    int getAttr2(vector<int> *data, vector<int> index, vector<int> attr)
+    int getAttr2(vector<int> *data, vector<int> index)
     { /*返回熵增益最大的属性，使用CART算法的基尼系数*/
         double pos = 0, neg = 0;
         int len = index.size();
         for (int i = 0; i < len; i++)
         { //计算数据集中正例与反例的个数
             int a = index[i];
-            if (data[a][data[a].size() - 1] == 1)
+            if (data[a][ATTR_NUM] == 1)
                 pos++;
             else
                 neg++;
@@ -290,7 +298,7 @@ public:
             for (int j = 0; j < len; j++)
             { //计算各分支的正例与反例的个数
                 int a = index[j];
-                if (data[a][data[a].size() - 1] == 1)
+                if (data[a][ATTR_NUM] == 1)
                     attr_pos[data[a][i]]++;
                 else
                     attr_neg[data[a][i]]++;
@@ -318,7 +326,7 @@ public:
         return position;
     }
 
-    int getAttr3(vector<int> *data, vector<int> index, vector<int> attr)
+    int getAttr3(vector<int> *data, vector<int> index)
     { /*返回熵增益最大的属性，使用ID3算法*/
         double pos = 0, neg = 0;
         int len = index.size();
@@ -427,5 +435,6 @@ public:
             if (n->children[i] != NULL)
                 ergo(n->children[i]);
     }
+
 };
 
