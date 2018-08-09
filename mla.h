@@ -1,12 +1,14 @@
 #include "machine_learning.h"
+#define MAX_LEN 10000000
 
 /*machine learning algorithm parents class*/
 class MLA{
 
-private:
+protected:
     AlgorithmType at;
-    vector <struct train_record *> mydataset;
+    vector<int> Data[MAX_LEN];
     struct train_record *tr;
+    int length; /*样本数*/
 
 public:/*algorithm basic operation*/
     MLA(){}
@@ -14,14 +16,52 @@ public:/*algorithm basic operation*/
     void get_data_set(const char * filename)
     {
         FILE *fp = fopen(filename,"r");
+        int m = 0;
         while(!feof(fp))
         {
             tr = (struct train_record *)malloc(sizeof(struct train_record));
-            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size, &tr->freq,&tr->label);
-            mydataset.push_back(tr);
+            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d,%d,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size, &tr->readfreq,&tr->writefreq,&tr->label);
+            Data[m] = pre_pro_data(tr);
+            Data[m].push_back(tr->label);
+            m++;
             tr = NULL;
         }
+        length = m;
         fclose(fp);
+    }
+
+    vector<int> pre_pro_data(struct train_record *train_r)
+    {
+        vector<int> result;
+        int tmp = 0;
+        /*时间处理*/
+        tmp = log(train_r->read_timestamp + 1) / log(2);
+        if(tmp > 25) tmp = 25;
+        result.push_back(tmp);
+        tmp = log(train_r->write_timestamp + 1) / log(2);
+        if (tmp > 25) tmp = 25;
+        result.push_back(tmp);
+
+        /*读写频次处理*/
+        tmp = log(train_r->readfreq + 1) / log(2);
+        if(tmp > 20) tmp = 20;
+        result.push_back(tmp);
+        tmp = log(train_r->writefreq + 1) / log(2);
+        if(tmp > 20) tmp = 20;
+        result.push_back(tmp);
+
+        /*读写比例处理*/
+        result.push_back(train_r->read_ratio / 5);
+
+        /*读写大小处理*/
+        tmp = log(train_r->read_size + 1) / log(2);
+        if(tmp > 20) tmp = 20;
+        result.push_back(tmp);
+        tmp = log(train_r->write_size + 1) / log(2);
+        if(tmp > 20) tmp = 20;
+        result.push_back(tmp);
+
+        return result;
     }
 
     virtual void training(const char *filename)=0;
@@ -34,7 +74,7 @@ public:/*algorithm basic operation*/
         while (!feof(fp))
         {
             tr = (struct train_record *)malloc(sizeof(struct train_record));
-            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size,&tr->freq);
+            fscanf(fp, "%ld,%ld,%lf,%lf,%lf,%d,%d\n", &tr->read_timestamp, &tr->write_timestamp, &tr->read_ratio, &tr->read_size, &tr->write_size,&tr->readfreq,&tr->writefreq);
             cout << predict(tr) << endl;;
             free(tr);
             tr = NULL;

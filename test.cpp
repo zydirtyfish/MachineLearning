@@ -16,6 +16,7 @@ int main(int argc,char *argv[])
             dt = new class DecisionTree();
             break;
         default:
+            dt = new class DecisionTree();
             break;
     }
     dt->training("train.csv");

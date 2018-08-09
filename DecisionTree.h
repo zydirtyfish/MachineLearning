@@ -10,16 +10,27 @@ struct TreeNode
     int pos;                     /*当前节点下负例个数*/
     int attr;                    /*节点特征*/
     vector<int> attr_value;      /*节点分支依据*/
-    TreeNode *children[50] = {NULL};   /*有多个孩子*/
+    TreeNode *children[30] = {NULL};   /*有多个孩子*/
 };
 #endif
 
 class DecisionTree : public MLA
 {
+private:
+    vector<int> attr; /*特征集合*/
+    vector<int> index; /*数据集索引*/
+    TreeNode * root; /*根节点*/
+
 public:
     /*initialize*/
     DecisionTree()
-    {}
+    {
+        for(int i = 0 ; i < ATTR_NUM ; i++)
+        {/*init attr set*/
+            attr.push_back(i);
+        }
+        
+    }
 
     ~DecisionTree()
     {}
@@ -28,6 +39,11 @@ public:
     {
         /*get the training data set*/
         get_data_set(filename);
+        for(int i = 0 ; i < length ; i++)
+        {/*初始化数据集索引，每一项代表训练集中的一条记录*/
+            index.push_back(i);
+        }
+        recursive(root,index);
     }
 
     Classes predict(struct train_record *tr)
@@ -47,14 +63,36 @@ public:
     }
 
   private:
-    int getAttr(vector<int> *data, vector<int> index, vector<int> attr)
+    void recursive(TreeNode *p, vector<int> index)
+    {
+        int attr_chosen = getAttr(Data,index,attr);
+    }
+
+    int getAttr(vector<int> *data, vector<int> index, vector<int> attr, int algorithmtype = 0)
+    {
+        int result;
+        switch(algorithmtype)
+        {
+            case 0:
+                result = getAttr1(data, index, attr); break;
+            case 1:
+                result = getAttr2(data, index, attr);break;
+            case 2:
+                result = getAttr3(data, index, attr);break;
+            default:
+                result = getAttr1(data, index, attr);break;
+        }
+        return result;
+    }
+
+    int getAttr1(vector<int> *data, vector<int> index, vector<int> attr)
     { /*返回熵增益最大的属性，使用C4_5算法*/
         double pos = 0, neg = 0;
         int len = index.size();
         for (int i = 0; i < len; i++)
         { /*计算数据集中正例与反例的个数*/
             int a = index[i];
-            if (data[a][data[a].size() - 1] == 1)
+            if (data[a][data[a].size()-1] == 1)
                 pos++;
             else
                 neg++;
@@ -72,7 +110,7 @@ public:
             for (int j = 0; j < len; j++)
             { /*计算各分支的正例与反例的个数*/
                 int a = index[j];
-                if (data[a][data[a].size() - 1] == 1)
+                if (data[a][data[a].size()-1] == 1)
                     attr_pos[data[a][i]]++;
                 else
                     attr_neg[data[a][i]]++;

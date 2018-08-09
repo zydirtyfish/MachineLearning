@@ -12,6 +12,11 @@
 
 using namespace std;
 
+#ifndef ATTRN
+#define ATTRN
+#define ATTR_NUM 9
+#endif
+
 #ifndef ALGORITHMT
 #define ALGORITHMT
 enum AlgorithmType
@@ -32,11 +37,25 @@ enum Classes
 };
 #endif
 
+#ifndef ATTR
+#define ATTR
+enum Attribute
+{
+    FREQ = 0,
+    READTIME,
+    WRTIETIME,
+    READRATIO,
+    READSIZE,
+    WRITESIZE
+};
+#endif
+
 #ifndef TRAIN_RE
 #define TRAIN_RE
 struct train_record
 {
-    int freq;
+    int readfreq;
+    int writefreq;
     int label; /*标记类别*/
     long read_timestamp;
     long write_timestamp;
