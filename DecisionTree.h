@@ -296,8 +296,8 @@ public:
         for (int k = 0; k < attr.size(); k++)
         {
             int i = attr[k];
-            double attr_pos[50] = {0};
-            double attr_neg[50] = {0};
+            double attr_pos[MAXNODE] = {0};
+            double attr_neg[MAXNODE] = {0};
             for (int j = 0; j < len; j++)
             { //计算各分支的正例与反例的个数
                 int a = index[j];
@@ -307,7 +307,7 @@ public:
                     attr_neg[data[a][i]]++;
             }
             gini[k] = 0;
-            for (int j = 0; j < 50; j++)
+            for (int j = 0; j < MAXNODE; j++)
             { //计算各属性的基尼系数
                 if (attr_pos[j] != 0 || attr_neg[j] != 0)
                 {
@@ -347,8 +347,8 @@ public:
         for (int k = 0; k < attr.size(); k++)
         {
             int i = attr[k];
-            double attr_pos[50] = {0};
-            double attr_neg[50] = {0};
+            double attr_pos[MAXNODE] = {0};
+            double attr_neg[MAXNODE] = {0};
             for (int j = 0; j < len; j++)
             { //计算各分支的正例与反例的个数
                 int a = index[j];
@@ -359,7 +359,7 @@ public:
             }
             gain[k] = 0;
             //因为计算信息增益的时候，被减数信息熵相同，因此只计算减数，选择减数值越小的的属性
-            for (int j = 0; j < 50; j++)
+            for (int j = 0; j < MAXNODE; j++)
             { //计算信息增益
                 if (attr_pos[j] != 0 || attr_neg[j] != 0)
                 {
@@ -402,7 +402,7 @@ public:
             et = n->neg + 0.5;
         else
             et = n->pos + 0.5; //计算当前节点的et
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < MAXNODE; i++)
         {
             if (n->children[i] != NULL)
                 ET += eT(n->children[i]); //递归计算当前节点的ET
@@ -434,7 +434,7 @@ public:
         cut(n);
         if (n->label != 0)
             return;
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < MAXNODE; i++)
             if (n->children[i] != NULL)
                 ergo(n->children[i]);
     }
