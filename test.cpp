@@ -24,6 +24,5 @@ int main(int argc, char *argv[])
 
     dt->training("train.csv");
     dt->predict_many("test.csv");
-    system("pause");
     return 0;
 }

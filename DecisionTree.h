@@ -60,13 +60,13 @@ public:
         }
         recursive(root, index, algorithm_type);
         show(root);
-        //eT(root);   /*遍历树，标记可以剪枝的节点*/
-        //ergo(root); /*遍历树并剪枝。*/
+        eT(root);   /*遍历树，标记可以剪枝的节点*/
+        ergo(root); /*遍历树并剪枝。*/
+        //show(root);
     }
 
     Classes predict(struct train_record *tr)
     {
-        
         return Hot;
     }
     
@@ -86,7 +86,8 @@ public:
         cout << endl;
         for (auto it = tn->attr_value.begin(); it != tn->attr_value.end(); it++)
         {
-            show(tn->children[*it]);
+            if (tn->children[*it] != NULL)
+                show(tn->children[*it]);
         }
         
     }
@@ -117,8 +118,10 @@ public:
         auto it = Attr_value[attr_chosen].begin();
         for(int i = 0 ; i < subsets.size() ; i++,it++)
         {/*节点分支和边界处理*/
+            //cout << "asdfsdf34  " << *it << endl;
             TreeNode *subnode = new TreeNode;
             p->children[*it] = subnode;
+            subnode->attr = *it;
             if(meet_with_bound(subsets[i]))
             { /*可优化 如果下一个节点是递归结束，下个节点属性则在当前结点处理 */
                 if(subsets[i].size() == 0)
@@ -129,7 +132,6 @@ public:
                     subnode->neg = 0;
                     continue;
                 }
-                
                 else
                 {
                     pos = 0;neg = 0;
