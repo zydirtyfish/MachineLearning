@@ -82,15 +82,19 @@ public:
         for (auto it = tn->attr_value.begin(); it != tn->attr_value.end(); it++)
         {
             cout << *it << " ";
-            show(tn->children[*it]);
         }
         cout << endl;
+        for (auto it = tn->attr_value.begin(); it != tn->attr_value.end(); it++)
+        {
+            show(tn->children[*it]);
+        }
+        
     }
 
   private:
     void recursive(TreeNode *p, vector<int> index,ATYPE at)
     {
-        int attr_chosen = getAttr(Data,index,attr, at);
+        int attr_chosen = getAttr(Data,index, at);
         vector<vector<int> > subsets = get_subsets(attr_chosen,index);
         p->attr = attr_chosen;
         for(int i = 0 ; i < attr.size() ; i++) /*特征集中删除当前属性*/
@@ -194,22 +198,19 @@ public:
         return result;
     }
 
-    int getAttr(vector<int> *data, vector<int> index, vector<int> attr, ATYPE algorithmtype)
+    int getAttr(vector<int> *data, vector<int> index, ATYPE algorithmtype)
     {
-        int result;
         switch(algorithmtype)
         {
             case C45:
-                result = getAttr1(data, index); break;
+                return getAttr1(data, index);
             case CART:
-                result = getAttr2(data, index);break;
+                return getAttr2(data, index);
             case ID3:
-                result = getAttr3(data, index);break;
+                return getAttr3(data, index);
             default:
-                result = getAttr1(data, index);break;
+                return getAttr1(data, index);
         }
-        cout << "123123123    " << result << endl;
-        return result;
     }
 
     int getAttr1(vector<int> *data, vector<int> index)
@@ -219,7 +220,7 @@ public:
         for (int i = 0; i < len; i++)
         { /*计算数据集中正例与反例的个数*/
             int a = index[i];
-            if (data[a][data[a].size()-1] == 1)
+            if (data[a][ATTR_NUM] == 1)
                 pos++;
             else
                 neg++;
@@ -237,14 +238,14 @@ public:
             for (int j = 0; j < len; j++)
             { /*计算各分支的正例与反例的个数*/
                 int a = index[j];
-                if (data[a][data[a].size()-1] == 1)
+                if (data[a][ATTR_NUM] == 1)
                     attr_pos[data[a][i]]++;
                 else
                     attr_neg[data[a][i]]++;
             }
             gain[k] = 0;
             splitinfo[k] = 0;
-            for (int j = 0; j < 50; j++)
+            for (int j = 0; j < MAXNODE; j++)
             { /*计算信息增益*/
                 if (attr_pos[j] != 0 || attr_neg[j] != 0)
                 {
@@ -260,12 +261,14 @@ public:
         int position;
         for (int i = 0; i < attr.size(); i++)
         {
+            cout << gain[i] << endl;
             if (gain[i] > MAX)
             {
                 MAX = gain[i];
                 position = attr[i];
             }
         }
+        //cout << position << endl;
         return position;
     }
 

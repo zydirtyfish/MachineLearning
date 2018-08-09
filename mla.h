@@ -47,22 +47,24 @@ public:/*algorithm basic operation*/
         if (tmp > 25) tmp = 25;
         result.push_back(tmp);
 
+        /*读写比例处理*/
+        result.push_back(train_r->read_ratio / 5);
+        
+        /*读写大小处理*/
+        tmp = log(train_r->read_size + 1) / log(2);
+        if (tmp > 20)
+            tmp = 20;
+        result.push_back(tmp);
+        tmp = log(train_r->write_size + 1) / log(2);
+        if (tmp > 20)
+            tmp = 20;
+        result.push_back(tmp);
+
         /*读写频次处理*/
         tmp = log(train_r->readfreq + 1) / log(2);
         if(tmp > 20) tmp = 20;
         result.push_back(tmp);
         tmp = log(train_r->writefreq + 1) / log(2);
-        if(tmp > 20) tmp = 20;
-        result.push_back(tmp);
-
-        /*读写比例处理*/
-        result.push_back(train_r->read_ratio / 5);
-
-        /*读写大小处理*/
-        tmp = log(train_r->read_size + 1) / log(2);
-        if(tmp > 20) tmp = 20;
-        result.push_back(tmp);
-        tmp = log(train_r->write_size + 1) / log(2);
         if(tmp > 20) tmp = 20;
         result.push_back(tmp);
 
