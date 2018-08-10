@@ -301,15 +301,12 @@ public:
         int position;
         for (int i = 0; i < attr.size(); i++)
         {
-            cout << gain[i] << " ";
             if (gain[i] > MAX)
             {
                 MAX = gain[i];
                 position = attr[i];
             }
         }
-        cout << endl;
-        //cout << position << endl;
         return position;
     }
 
