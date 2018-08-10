@@ -15,3 +15,11 @@ struct dataset{
     write_freq;
 }
 ```
+
+#### data pre_processing
+```
+timestamp -> log(limestamp)
+read_ratio -> read_ratio / 5
+io_size -> log(io_size)
+frequency -> log(frequency)
+```
