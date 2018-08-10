@@ -16,7 +16,7 @@
 #define NODE__
 struct TreeNode
 { /*tree node*/
-    int label = 0;
+    int label = 0;               /*用于记录节点状态，如果为0，说明有子节点，如果为1则为正样本，如果为-1则为负样本*/
     int neg;                     /*当前节点下正例个数*/
     int pos;                     /*当前节点下负例个数*/
     double CUT;                  /*是否剪枝*/
@@ -63,8 +63,8 @@ public:
         }
         recursive(root, index, algorithm_type);
         //show(root);
-        eT(root);   /*遍历树，标记可以剪枝的节点*/
-        ergo(root); /*遍历树并剪枝。*/
+        //eT(root);   /*遍历树，标记可以剪枝的节点*/
+        //ergo(root); /*遍历树并剪枝。*/
         //show(root);
     }
 
@@ -286,6 +286,7 @@ public:
             sum_splitinfo += splitinfo[k];
             cnt_tmp++;
             /*计算增益率，在分母加一个平滑，防止splitinfo为0的情况，这里加一个分裂信息的平均值*/
+            /*参见https://cloud.tencent.com/developer/article/1106122*/
             if(sum_splitinfo == 0)
             {
                 gain[k] = (H - gain[k]) / (1 + splitinfo[k]);
@@ -294,9 +295,7 @@ public:
             {
                 avg_splitinfo = sum_splitinfo / cnt_tmp;
                 gain[k] = (H - gain[k]) / (avg_splitinfo + splitinfo[k]);
-            }
-            
-            
+            } 
         }
         double MAX = -99999;
         int position;
