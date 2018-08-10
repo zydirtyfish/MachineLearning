@@ -73,7 +73,7 @@ public:/*algorithm basic operation*/
 
     virtual void training(const char *filename)=0;
 
-    virtual Classes predict(struct train_record *tr)=0;
+    virtual bool predict(struct train_record *tr)=0;
 
     void predict_many(const char *filename)
     {

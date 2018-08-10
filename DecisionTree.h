@@ -62,15 +62,32 @@ public:
             index.push_back(i);
         }
         recursive(root, index, algorithm_type);
-        show(root);
+        //show(root);
         eT(root);   /*遍历树，标记可以剪枝的节点*/
         ergo(root); /*遍历树并剪枝。*/
         //show(root);
     }
 
-    Classes predict(struct train_record *tr)
+    bool predict(struct train_record *tr)
     {
-        return Hot;
+        vector<int> v = pre_pro_data(tr);
+        TreeNode *node = root;
+        int flag = 0;
+        while(node->label == 0)
+        {
+            int attr_value = v[node->attr];
+            if(node->children[attr_value] == NULL)
+            {
+                flag = 1;
+                if(node->pos >= node->neg) return true;
+                else return false;
+                break;
+            }
+            node = node->children[attr_value];
+        }
+        if(flag == 0 && node->label == 1)
+            return true;
+        return false;
     }
     
     void persistent(const char *filename)
