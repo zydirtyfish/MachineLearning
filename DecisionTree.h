@@ -35,6 +35,9 @@ private:
     
     ATYPE algorithm_type;
 
+    double avg_splitinfo,sum_splitinfo;
+    int cnt_tmp;
+
 public:
     /*initialize*/
     DecisionTree(ATYPE at)
@@ -217,6 +220,7 @@ public:
 
     int getAttr1(vector<int> *data, vector<int> index)
     { /*返回熵增益最大的属性，使用C4_5算法*/
+        cout << endl;
         double pos = 0, neg = 0;
         int len = index.size();
         for (int i = 0; i < len; i++)
@@ -232,6 +236,7 @@ public:
         /*计算各属性的信息增益*/
         double *gain = new double[attr.size()];
         double *splitinfo = new double[attr.size()];
+        
         for (int k = 0; k < attr.size(); k++)
         {
             int i = attr[k];
@@ -247,6 +252,10 @@ public:
             }
             gain[k] = 0;
             splitinfo[k] = 0;
+
+            cnt_tmp = 0;
+            avg_splitinfo = sum_splitinfo = 0;
+            
             for (int j = 0; j < MAXNODE; j++)
             { /*计算信息增益*/
                 if (attr_pos[j] != 0 || attr_neg[j] != 0)
@@ -256,20 +265,34 @@ public:
                     gain[k] += p_sum / (len * 1.0) * (-xlog2(attr_pos[j] / p_sum) - xlog2(attr_neg[j] / p_sum));
                 }
             }
-            /*计算增益率*/
-            gain[k] = (H - gain[k]) / splitinfo[k];
+
+            sum_splitinfo += splitinfo[k];
+            cnt_tmp++;
+            /*计算增益率，在分母加一个平滑，防止splitinfo为0的情况，这里加一个分裂信息的平均值*/
+            if(sum_splitinfo == 0)
+            {
+                gain[k] = (H - gain[k]) / (1 + splitinfo[k]);
+            }
+            else
+            {
+                avg_splitinfo = sum_splitinfo / cnt_tmp;
+                gain[k] = (H - gain[k]) / (avg_splitinfo + splitinfo[k]);
+            }
+            
+            
         }
         double MAX = -99999;
         int position;
         for (int i = 0; i < attr.size(); i++)
         {
-            cout << gain[i] << endl;
+            cout << gain[i] << " ";
             if (gain[i] > MAX)
             {
                 MAX = gain[i];
                 position = attr[i];
             }
         }
+        cout << endl;
         //cout << position << endl;
         return position;
     }
