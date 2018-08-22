@@ -19,7 +19,7 @@ struct dataset{
 #### data pre_processing
 To do the following operation and make sure all the data items are integers between 1 and 30 
 ```
-timestamp -> log(limestamp)
+timestamp -> log(timestamp)
 read_ratio -> read_ratio / 5
 io_size -> log(io_size)
 frequency -> log(frequency)
